@@ -1,0 +1,15 @@
+{
+  "name": "research-ai-agent",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "frontend": "npm run dev --workspace=frontend",
+    "backend": "npm run dev --workspace=backend"
+  }
+}
+
