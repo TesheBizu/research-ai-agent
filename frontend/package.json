@@ -4,8 +4,23 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "echo \"Frontend dev server placeholder\"",
-    "build": "echo \"Frontend build placeholder\""
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "axios": "^1.21.1",
+    "lucide-react": "^1.73.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-router-dom": "^7.18.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.5",
+    "@vitejs/plugin-react": "^6.3.0",
+    "autoprefixer": "^10.6.2",
+    "postcss": "^8.5.33",
+    "tailwindcss": "^4.3.5",
+    "vite": "^8.3.8"
   }
 }
-

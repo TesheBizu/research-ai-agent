@@ -45,12 +45,80 @@ research-ai-agent/
 
 ## 🚦 Development Status
 
-- **Current Phase**: Phase 0 — Foundation & Repository Initialization.
-- **Active State**: Monorepo scaffolding, ES module configuration, package manifests, and repository rules established. No application features or unnecessary dependencies have been loaded yet.
+- **Current Phase**: Phase 1 — Backend & Frontend Foundations Scaffolding.
+- **Active State**:
+  - Express API gateway configured with security headers (Helmet), CORS, JSON parsers, Morgan logging, and Mongoose connection lifecycle manager.
+  - Liveness (`GET /api/health`) and Readiness (`GET /api/health/ready`) checks active.
+  - React 18 + Vite frontend foundation established with Tailwind CSS v4, React Router, responsive SaaS workspace layout, and New Research interface.
 
 ---
 
 ## 🚀 Getting Started
 
-Detailed installation, environment configuration, and service startup instructions will be documented as dependencies and application modules are introduced.
+### Prerequisites
+- **Node.js**: v20.0.0 or higher (tested on Node v24.20.0)
+- **npm**: v10.0.0 or higher
+- **MongoDB**: Local MongoDB instance or MongoDB Atlas cluster URI
+
+---
+
+### Backend Setup
+
+1. **Install Dependencies**:
+   ```bash
+   cd backend && npm install
+   ```
+   *(Or run `npm install --prefix backend` from the root)*.
+
+2. **Configure Environment Variables**:
+   ```bash
+   cp backend/.env.example backend/.env
+   ```
+   Configure your MongoDB connection string in `backend/.env`:
+   ```env
+   PORT=5000
+   NODE_ENV=development
+   MONGODB_URI=mongodb://127.0.0.1:27017/researchai
+   CLIENT_URL=http://localhost:5173
+   ```
+
+3. **Start Development Server**:
+   ```bash
+   npm run backend
+   ```
+   *(Or run `npm run dev --prefix backend`)*.
+
+4. **Health Check Endpoints**:
+   - **Liveness**: `GET http://localhost:5000/api/health` (Reports application name, server status, environment, timestamp).
+   - **Readiness**: `GET http://localhost:5000/api/health/ready` (Reports HTTP 200 when MongoDB is connected; HTTP 503 when disconnected).
+
+---
+
+### Frontend Setup
+
+1. **Install Dependencies**:
+   ```bash
+   cd frontend && npm install
+   ```
+   *(Or run `npm install --prefix frontend` from the root)*.
+
+2. **Configure Environment Variables**:
+   ```bash
+   cp frontend/.env.example frontend/.env
+   ```
+   Set `VITE_API_BASE_URL` to your backend API address:
+   ```env
+   VITE_API_BASE_URL=http://localhost:5000/api
+   ```
+
+3. **Start Development Server**:
+   ```bash
+   npm run frontend
+   ```
+   *(Or run `npm run dev --prefix frontend`)*. Access the application at `http://localhost:5173`.
+
+4. **Production Build**:
+   ```bash
+   npm run build --prefix frontend
+   ```
 
