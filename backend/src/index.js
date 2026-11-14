@@ -1,7 +1,5 @@
 /**
  * ResearchAI Backend Service Entry Point
- * Configured as an ES Module ("type": "module")
+ * Re-exports server instance from src/server.js
  */
-
-console.log("ResearchAI Backend initialized.");
-
+export { default } from "./server.js";
