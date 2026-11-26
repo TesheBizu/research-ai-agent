@@ -4,8 +4,21 @@
  */
 export function errorMiddleware(err, req, res, next) {
   const isProduction = process.env.NODE_ENV === "production";
-  const statusCode = err.statusCode || err.status || 500;
-  const errorCode = err.code || (statusCode === 500 ? "INTERNAL_SERVER_ERROR" : "REQUEST_ERROR");
+  let statusCode = err.statusCode || err.status || 500;
+  let errorCode = err.code || (statusCode === 500 ? "INTERNAL_SERVER_ERROR" : "REQUEST_ERROR");
+  let details = err.details;
+
+  if (err.name === "ValidationError") {
+    statusCode = 400;
+    errorCode = "VALIDATION_ERROR";
+    details = Object.values(err.errors || {}).map((e) => ({
+      field: e.path,
+      message: e.message
+    }));
+  } else if (err.name === "CastError") {
+    statusCode = 400;
+    errorCode = "INVALID_ID";
+  }
 
   // Avoid leaking sensitive internal messages or traces in production for internal server errors
   const message =
@@ -18,7 +31,7 @@ export function errorMiddleware(err, req, res, next) {
     error: {
       code: errorCode,
       message,
-      ...(err.details && { details: err.details }),
+      ...(details && { details }),
       ...(!isProduction && err.stack && { stack: err.stack })
     }
   };

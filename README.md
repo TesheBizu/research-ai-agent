@@ -74,13 +74,20 @@ research-ai-agent/
    ```bash
    cp backend/.env.example backend/.env
    ```
-   Configure your MongoDB connection string in `backend/.env`:
+   Configure your MongoDB connection string and authentication variables in `backend/.env`:
    ```env
    PORT=5000
    NODE_ENV=development
    MONGODB_URI=mongodb://127.0.0.1:27017/researchai
    CLIENT_URL=http://localhost:5173
+   JWT_SECRET=replace_with_a_strong_random_jwt_secret
+   JWT_EXPIRES_IN=7d
+   AUTH_COOKIE_NAME=researchai_token
+   COOKIE_SAME_SITE=lax
+   COOKIE_SECURE=false
    ```
+
+   > **Deployment & CSRF Note**: Browser authentication uses `HttpOnly` cookies with `SameSite=lax` and CORS `credentials: true` restricted to `CLIENT_URL`. In production over HTTPS, set `NODE_ENV=production` (which enables `Secure` cookies). If frontend and backend are hosted on different registrable domains, set `COOKIE_SAME_SITE=none` with `COOKIE_SECURE=true` and add explicit CSRF protection (such as Origin header verification or CSRF tokens) before opening public traffic.
 
 3. **Start Development Server**:
    ```bash

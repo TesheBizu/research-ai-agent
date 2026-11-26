@@ -9,12 +9,16 @@
 
 ## 1. Authentication & Common Standards
 
-### 1.1 Headers
-All protected endpoints require a valid JSON Web Token (JWT) passed in the `Authorization` HTTP header:
-```http
-Authorization: Bearer <jwt_token>
-Content-Type: application/json
-```
+### 1.1 Authentication Transport, Cookies & CSRF Protection
+The backend supports browser-based authentication via **HttpOnly cookies** (`researchai_token`) as the primary transport, and also accepts `Authorization: Bearer <jwt_token>` for API clients.
+- **HttpOnly Cookie Settings**:
+  - `httpOnly: true` prevents client-side JavaScript from reading the JWT.
+  - `secure: true` in production (`NODE_ENV=production`) ensures cookies are only transmitted over HTTPS.
+  - `sameSite: "lax"` by default (configurable via `COOKIE_SAME_SITE`).
+- **CORS & Credentials**: Express CORS is configured with `credentials: true` and an explicit `CLIENT_URL` origin.
+- **CSRF & Deployment Considerations**:
+  - Same-site deployments (`api.example.com` and `app.example.com` under the same registrable domain) with `SameSite=Lax` block cross-site `POST` requests from carrying cookies, providing baseline CSRF protection.
+  - Cross-origin deployments requiring `COOKIE_SAME_SITE=none` and `COOKIE_SECURE=true` should additionally enforce strict `Origin`/`Referer` validation or a double-submit CSRF token on state-changing routes.
 
 ### 1.2 Common Error Response Format
 All error responses return a standardized JSON structure:
